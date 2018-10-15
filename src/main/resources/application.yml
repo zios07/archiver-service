@@ -1,0 +1,6 @@
+solr:
+  host: localhost
+  port: 8983
+
+server:
+  port: 9090
