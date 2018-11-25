@@ -1,77 +1,71 @@
 package com.cirb.archive.domain;
 
-import java.util.Date;
-
 import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.SolrDocument;
+
+import java.util.Date;
 
 @SolrDocument(collection = "archives")
 public class Archive {
 
 	@Id
 	@Field
-	private Long id;
-
-	@Field
-	private Date date;
+	private String id;
 
 	@Field
 	private Byte[] content;
-	
-	@Field
-	private String extension;
-	
-	@Field
-	private String fileName;
 
-	public Archive(Date date, Byte[] content, String extension, String fileName) {
-		super();
-		this.date = date;
-		this.content = content;
-		this.extension = extension;
-		this.fileName = fileName;
-	}
+  @Field
+  private Date date;
 
-	public Long getId() {
-		return id;
-	}
+  @Field
+  private String extension;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+  @Field
+  private String fileName;
 
-	public Date getDate() {
-		return date;
-	}
+  public Archive() {
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+  }
 
-	public Byte[] getContent() {
-		return content;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public void setContent(Byte[] content) {
-		this.content = content;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public String getExtension() {
-		return extension;
-	}
+  public Byte[] getContent() {
+    return content;
+  }
 
-	public void setExtension(String extension) {
-		this.extension = extension;
-	}
+  public void setContent(Byte[] content) {
+    this.content = content;
+  }
 
-	public String getFileName() {
-		return fileName;
-	}
+  public Date getDate() {
+    return date;
+  }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+  public void setDate(Date date) {
+    this.date = date;
+  }
 
-	
+  public String getExtension() {
+    return extension;
+  }
+
+  public void setExtension(String extension) {
+    this.extension = extension;
+  }
+
+  public String getFileName() {
+    return fileName;
+  }
+
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
+  }
 }
