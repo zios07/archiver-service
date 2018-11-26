@@ -14,6 +14,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,15 +46,18 @@ public class SearchController {
   }
 
   @GetMapping(value = "download/{id}")
-  public ResponseEntity download(@PathVariable String id, HttpServletResponse response) throws IOException {
+  public ResponseEntity<byte[]> download(@PathVariable String id, HttpServletResponse response) throws IOException {
     Optional<Archive> optional = archiveRepository.findById(id);
     if (optional.isPresent()) {
       Archive archive = optional.get();
-      try (InputStream is = new ByteArrayInputStream(ArrayUtils.toPrimitive(archive.getContent()))) {
-        IOUtils.copy(is, response.getOutputStream());
-      }
-      response.setHeader("Content-Disposition", "attachment; filename=" + archive.getFileName() + "." + archive.getExtension());
-      response.flushBuffer();
+      final HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.valueOf("application/octet-stream"));
+
+      String disposition = "attachment";
+
+      headers.add("content-disposition",
+        disposition + "; filename=\"" + archive.getFileName() + "." + archive.getExtension() + "\"");
+      return new ResponseEntity<>(ArrayUtils.toPrimitive(archive.getContent()), headers, HttpStatus.OK);
     }
     return ResponseEntity.notFound().build();
   }
