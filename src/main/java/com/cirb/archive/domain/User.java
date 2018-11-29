@@ -2,8 +2,6 @@ package com.cirb.archive.domain;
 
 import javax.persistence.*;
 
-import org.springframework.data.annotation.Id;
-
 @Entity
 @Table(name = "USER_TABLE")
 public class User {

@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.cirb.archive.domain.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 			User creds = new ObjectMapper().readValue(req.getInputStream(), User.class);
 
-			return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(creds.getUsername(),
+			return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(creds.getLogin(),
 					creds.getPassword(), Collections.emptyList()));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -45,12 +45,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
 			Authentication auth) throws IOException, ServletException {
 
-		final Claims claims = Jwts.claims().setSubject(((User) auth.getPrincipal()).getUsername());
-		if (((User) auth.getPrincipal()).getAuthorities() != null
-				&& !((User) auth.getPrincipal()).getAuthorities().isEmpty()) {
-			claims.put("role",
-					((User) auth.getPrincipal()).getAuthorities().iterator().next().getAuthority().toUpperCase());
-		}
+		final Claims claims = Jwts.claims().setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername());
 		String token = Jwts.builder().setClaims(claims)
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET.getBytes()).compact();
