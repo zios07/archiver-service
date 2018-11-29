@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.cirb.archive.domain.Archive;
+import com.cirb.archive.domain.vo.ArchiveVO;
 import com.cirb.archive.domain.vo.SearchVO;
 
 /**
@@ -19,7 +20,7 @@ public interface IArchiveService {
 	 * @param vo
 	 * @return
 	 */
-	List<Archive> search(SearchVO vo);
+	List<ArchiveVO> search(SearchVO vo);
 
 	/**
 	 * @return

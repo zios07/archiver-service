@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.cirb.archive.domain.vo.ArchiveVO;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -44,7 +45,7 @@ public class SearchController {
   }
 
   @PostMapping(value = "search")
-  public ResponseEntity<List<Archive>> getByDate(@RequestBody SearchVO vo) {
+  public ResponseEntity<List<ArchiveVO>> getByDate(@RequestBody SearchVO vo) {
     return ResponseEntity.ok(Lists.newArrayList(archiveService.search(vo)));
   }
 
@@ -56,7 +57,7 @@ public class SearchController {
       final HttpHeaders headers = new HttpHeaders();
       headers.setContentType(MediaType.valueOf("application/octet-stream"));
 
-      String disposition = "attachment";
+      String disposition = "inline";
 
       headers.add("content-disposition",
         disposition + "; filename=\"" + archive.getFileName() + "." + archive.getExtension() + "\"");

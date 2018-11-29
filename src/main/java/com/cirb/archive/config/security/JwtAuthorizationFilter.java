@@ -1,8 +1,6 @@
 package com.cirb.archive.config.security;
 
-import static com.cirb.archive.config.security.SecurityConstants.HEADER_STRING;
-import static com.cirb.archive.config.security.SecurityConstants.SECRET;
-import static com.cirb.archive.config.security.SecurityConstants.TOKEN_PREFIX;
+import static com.cirb.archive.config.security.SecurityConstants.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.base.Strings;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,8 +29,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 			throws IOException, ServletException {
 		
 		String header = req.getHeader(HEADER_STRING);
-
-		if (header == null || !header.startsWith(TOKEN_PREFIX)) {
+		String tokenParam = req.getParameter(TOKEN_PARAM_NAME);
+		if ((header == null || !header.startsWith(TOKEN_PREFIX)) && Strings.isNullOrEmpty(tokenParam)) {
 			chain.doFilter(req, res);
 			return;
 		}
@@ -44,6 +43,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
 	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
 		String token = request.getHeader(HEADER_STRING);
+		if( token == null ) {
+      token = request.getParameter(TOKEN_PARAM_NAME);
+    }
 		if (token != null) {
 			// parse the token.
 			String user = Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
