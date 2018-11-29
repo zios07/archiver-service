@@ -2,5 +2,26 @@ solr:
   host: localhost
   port: 8983
 
+db:
+  host: localhost
+  port: 5432
+  name: archiverservice
+  username: postgres
+  password: postgres
+  
 server:
   port: 9090
+  
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${db.host}:${db.port}/${db.name}?stringtype=unspecified
+    username: ${db.username}
+    password: ${db.password}
+  jpa:
+    show-sql: true
+    hibernate:
+        ddl-auto: update
+    properties:
+        hibernate:
+            dialect: org.hibernate.dialect.PostgreSQL94Dialect
