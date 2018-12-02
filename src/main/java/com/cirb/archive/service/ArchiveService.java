@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.convert.DateTimeConverters.JavaDateConverter;
 import org.springframework.data.solr.core.query.Criteria;
+import org.springframework.data.solr.core.query.Query;
 import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.data.solr.core.query.SimpleStringCriteria;
 import org.springframework.stereotype.Service;
@@ -39,18 +40,17 @@ public class ArchiveService implements IArchiveService {
    */
   @Override
   public List<ArchiveVO> search(SearchVO vo) {
-    Criteria conditions = null;
-    String start = JavaDateConverter.INSTANCE.convert(vo.getDateFrom()) + "/DAY";
-    String end = JavaDateConverter.INSTANCE.convert(vo.getDateTo()) + "/DAY";
-    Criteria criteria = new Criteria("date").expression("[" + start + " TO " + end + "]");
-//    new SimpleStringCriteria("[" + start + " TO " + end + "]");
-//    if (vo.getDateFrom() != null && vo.getDateTo() != null)
-//      conditions = new Criteria("date").between(start, end, true, true);
-//    else if (vo.getTimestamp() != null)
-//      conditions = new Criteria("date").is(vo.getTimestamp());
-
-    SimpleQuery search = new SimpleQuery(criteria);
-    Page<ArchiveVO> results = solrTemplate.query("archives", search, ArchiveVO.class);
+    Criteria criteria = new Criteria("date");
+    if(vo.getDateFrom() != null && vo.getDateTo() != null) {
+      String start = JavaDateConverter.INSTANCE.convert(vo.getDateFrom()) + "/DAY";
+      String end = JavaDateConverter.INSTANCE.convert(vo.getDateTo()) + "/DAY";
+      criteria.expression("[" + start + " TO " + end + "]");
+    } else if (vo.getTimestamp() != null) {
+      String date = JavaDateConverter.INSTANCE.convert(vo.getTimestamp()) + "/DAY";
+      criteria.expression(date);
+    }
+    Query query = new SimpleQuery(criteria);
+    Page<ArchiveVO> results = solrTemplate.query("archives", query, ArchiveVO.class);
     return results.getContent();
   }
 
