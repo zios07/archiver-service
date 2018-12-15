@@ -25,3 +25,10 @@ spring:
     properties:
         hibernate:
             dialect: org.hibernate.dialect.PostgreSQL94Dialect
+
+jks:
+  path: C:\Users\zakar\Documents\
+  password: P@ssw0rd
+
+encryption:
+  key: cirbAESkey

@@ -1,0 +1,75 @@
+│   .gitignore
+│   archiver-service.iml
+│   pom.xml
+│
+└───src
+    ├───main
+    │   ├───java
+    │   │   ├───com
+    │   │   │   └───cirb
+    │   │   │       └───archive
+    │   │   │           │   ArchiverServiceApplication.java
+    │   │   │           │
+    │   │   │           ├───config
+    │   │   │           │   │   SolrConfig.java
+    │   │   │           │   │   WebSecurityConfig.java
+    │   │   │           │   │
+    │   │   │           │   └───security
+    │   │   │           │           JavaPGP.java
+    │   │   │           │           JwtAuthenticationFilter.java
+    │   │   │           │           JwtAuthorizationFilter.java
+    │   │   │           │           SecurityConstants.java
+    │   │   │           │           UserDetailsServiceImpl.java
+    │   │   │           │
+    │   │   │           ├───domain
+    │   │   │           │   │   Archive.java
+    │   │   │           │   │   User.java
+    │   │   │           │   │
+    │   │   │           │   └───vo
+    │   │   │           │           ArchiveVO.java
+    │   │   │           │           SearchVO.java
+    │   │   │           │
+    │   │   │           ├───repositories
+    │   │   │           │       ArchiveRepository.java
+    │   │   │           │       UserRepository.java
+    │   │   │           │
+    │   │   │           ├───rest
+    │   │   │           │       SearchController.java
+    │   │   │           │
+    │   │   │           └───service
+    │   │   │               │   ArchiveService.java
+    │   │   │               │   IArchiveService.java
+    │   │   │               │   IUserService.java
+    │   │   │               │   UserService.java
+    │   │   │               │
+    │   │   │               └───exception
+    │   │   │                       NotFoundException.java
+    │   │   │
+    │   │   └───META-INF
+    │   │           MANIFEST.MF
+    │   │
+    │   └───resources
+    │           application.yml
+    │
+    └───test
+        └───java
+            └───com
+                └───cirb
+                    └───archive
+                        └───service
+                            └───archiverservice
+                                    ArchiverServiceApplicationTests.java
+
+
+** EXPLANATION ***
+
+* ArchiverServiceApplication: classe principale de démarrage de l'application
+* SolrConfig: Contient la configuration du solr, avec des valeurs externalisées dans le fichier application.yml
+* WebSecurityConfig: classe de configuration principale du framework spring security
+* JavaPGP: Contient tous le code métier et algorithme de decryptage utilisé lors du déchiffrage des 2 champs (institute, keyValue) dans la classe ArchiveService
+* JwtAuthenticationFilter: Un filtre pour interdire l'accès, à des routes spécifiques, pour les utilisateurs non authentifiés.
+* JwtAuthorizationFilter: Ce filtre permet de vérifier si un utilisateur authentifié a le droit d'accéder à l'application ou pas.
+* SecurityConstants: Regroupe l'ensemble des constants utilisées dans la partie sécurité de l'application.
+* UserDetailsServiceImpl: Contient une methode 'findByUsername', qui permet de selectionner un utilisateur en sachant son username.
+* SearchController: Classe responsable de repondre aux requettes de recherche
+* ArchiveService: Classe qui contient le code métier de recherche des archives dans solr.
