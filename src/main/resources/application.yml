@@ -27,7 +27,7 @@ spring:
             dialect: org.hibernate.dialect.PostgreSQL94Dialect
 
 jks:
-  path: C:\Users\zakar\Documents\
+  path: C:\Users\Zkaoukab\Documents\
   password: P@ssw0rd
 
 encryption:

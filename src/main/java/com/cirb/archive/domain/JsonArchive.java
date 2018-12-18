@@ -1,15 +1,17 @@
 package com.cirb.archive.domain;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 public class JsonArchive implements Serializable {
 
+	private static final long serialVersionUID = 5273127257463340020L;
+
 	@JsonInclude(Include.NON_NULL)
-	private Long id;
+	private String id;
 
 	private Date date;
 
@@ -28,35 +30,36 @@ public class JsonArchive implements Serializable {
 		this.provider = provider;
 	}
 
-  public Long getId() {
-    return id;
-  }
+	public String getId() {
+		return id;
+	}
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-  public Date getDate() {
-    return date;
-  }
+	public Date getDate() {
+		return date;
+	}
 
-  public void setDate(Date date) {
-    this.date = date;
-  }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-  public ArchiveMetadata getConsumer() {
-    return consumer;
-  }
+	public ArchiveMetadata getConsumer() {
+		return consumer;
+	}
 
-  public void setConsumer(ArchiveMetadata consumer) {
-    this.consumer = consumer;
-  }
+	public void setConsumer(ArchiveMetadata consumer) {
+		this.consumer = consumer;
+	}
 
-  public ArchiveMetadata getProvider() {
-    return provider;
-  }
+	public ArchiveMetadata getProvider() {
+		return provider;
+	}
 
-  public void setProvider(ArchiveMetadata provider) {
-    this.provider = provider;
-  }
+	public void setProvider(ArchiveMetadata provider) {
+		this.provider = provider;
+	}
+
 }
