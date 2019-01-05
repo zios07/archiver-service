@@ -4,11 +4,13 @@
 package com.cirb.archive.rest;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -48,7 +50,7 @@ public class SearchController {
 		return ResponseEntity.ok(archiveService.search(vo));
 	}
 
-	@GetMapping(value = "download/{id}")
+	@GetMapping(value = "download/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<byte[]> download(@PathVariable String id) throws GeneralSecurityException, IOException {
 		Optional<Archive> optional = archiveService.findById(id);
 		if (optional.isPresent()) {
@@ -57,7 +59,7 @@ public class SearchController {
 			headers.setContentType(MediaType.valueOf("application/octet-stream"));
 
 			String disposition = "inline";
-
+      String str = new String(ArrayUtils.toPrimitive(archive.getContent()), StandardCharsets.UTF_8);
 			headers.add("content-disposition",
 					disposition + "; filename=\"" + archive.getFileName() + "." + archive.getExtension() + "\"");
 			return new ResponseEntity<>(ArrayUtils.toPrimitive(archive.getContent()), headers, HttpStatus.OK);

@@ -64,10 +64,20 @@ public class ArchiveService implements IArchiveService {
 			String end = JavaDateConverter.INSTANCE.convert(vo.getDateTo()) + "/DAY";
 			criteria.expression("[" + start + " TO " + end + "]");
 		} else if (vo.getTimestamp() != null) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(vo.getTimestamp());
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
-			String date = JavaDateConverter.INSTANCE.convert(vo.getTimestamp()) + "/DAY";
+      Calendar timeStamp = Calendar.getInstance();
+      timeStamp.setTime(vo.getTimestamp());
+      timeStamp.set(Calendar.HOUR, 00);
+      timeStamp.set(Calendar.MINUTE, 00);
+      timeStamp.set(Calendar.SECOND, 00);
+
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTime(vo.getTimestamp());
+      calendar.add(Calendar.DAY_OF_MONTH, 1);
+      calendar.set(Calendar.HOUR, 00);
+      calendar.set(Calendar.MINUTE, 00);
+      calendar.set(Calendar.SECOND, 00);
+
+      String date = JavaDateConverter.INSTANCE.convert(vo.getTimestamp()) + "/DAY";
 			String nextDate = JavaDateConverter.INSTANCE.convert(calendar.getTime()) + "/DAY";
 
 			criteria.expression("[" + date + " TO " + nextDate + "]");
